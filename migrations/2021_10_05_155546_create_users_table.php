@@ -27,8 +27,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->comment('信箱');
             $table->string('password')->comment('密碼');
             $table->string('gender')->default(\App\Model\User::GENDER_MALE)->comment('性別');
+            $table->boolean('verified')->default(0)->comment('驗證狀態')->index();
+            $table->string('confirm_token')->nullable()->comment('驗證信箱的 token');
             $table->timestamp('verified_at')->nullable()->comment('驗證時間');
-            $table->string('verify_token')->nullable()->comment('驗證 token');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -9,6 +9,11 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-return [
-    \App\Contracts\UserServiceInterface::class => \App\Service\UserService::class,
-];
+namespace App\Contracts;
+
+use App\Model\User;
+
+interface UserServiceInterface
+{
+    public function createUser(array $params): User;
+}

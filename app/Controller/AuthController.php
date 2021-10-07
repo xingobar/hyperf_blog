@@ -11,9 +11,13 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Contracts\UserServiceInterface;
 use App\Request\AuthRequest;
+use App\Resource\UserResource;
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\Utils\Str;
 
 /**
  * @Controller(prefix="auth")
@@ -21,6 +25,12 @@ use Hyperf\HttpServer\Annotation\PostMapping;
  */
 class AuthController extends AbstractController
 {
+    /**
+     * @Inject
+     * @var UserServiceInterface
+     */
+    public $userService;
+
     /**
      * @PostMapping(path="register")
      * 註冊
@@ -34,6 +44,10 @@ class AuthController extends AbstractController
 
         $params = $authRequest->inputs(['account', 'email', 'password']);
 
-        return $this->response->json($params);
+        $user = $this->userService->createUser(array_merge($params, [
+            'confirm_token' => Str::random(32),
+        ]));
+
+        return (new UserResource($user))->toResponse();
     }
 }

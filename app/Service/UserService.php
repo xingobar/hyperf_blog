@@ -11,14 +11,24 @@ declare(strict_types=1);
  */
 namespace App\Service;
 
+use App\Contracts\UserServiceInterface;
 use App\Repository\UserRepository;
 use Hyperf\Di\Annotation\Inject;
 
-class UserService
+class UserService implements UserServiceInterface
 {
     /**
      * @Inject
      * @var UserRepository
      */
     public $userRepository;
+
+    /**
+     * 新增會員
+     * @return \App\Model\User|\Hyperf\Database\Model\Model
+     */
+    public function createUser(array $params)
+    {
+        return $this->userRepository->create($params);
+    }
 }

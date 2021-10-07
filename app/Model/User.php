@@ -39,7 +39,7 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'account', 'email', 'avatar', 'password', 'gender', 'verified_at', 'verify_token',
+        'account', 'email', 'avatar', 'password', 'gender', 'verified_at', 'confirm_token', 'verified',
     ];
 
     /**
