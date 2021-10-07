@@ -16,6 +16,7 @@
         "ext-json": "*",
         "gokure/hyperf-tinker": "^1.0",
         "hyperf-ext/hashing": "^2.2",
+        "hyperf-ext/mail": "^2.2",
         "hyperf/async-queue": "~2.2.0",
         "hyperf/cache": "~2.2.0",
         "hyperf/command": "~2.2.0",

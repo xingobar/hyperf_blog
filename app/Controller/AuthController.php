@@ -12,12 +12,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Contracts\UserServiceInterface;
+use App\Mail\ConfirmEmail;
 use App\Request\AuthRequest;
 use App\Resource\UserResource;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\Utils\Str;
+use HyperfExt\Mail\Mail;
 
 /**
  * @Controller(prefix="auth")
@@ -42,11 +44,15 @@ class AuthController extends AbstractController
         $authRequest = $this->container->get(AuthRequest::class);
         $authRequest->scene('register')->validateResolved();
 
+        // 取得參數
         $params = $authRequest->inputs(['account', 'email', 'password']);
 
         $user = $this->userService->createUser(array_merge($params, [
             'confirm_token' => Str::random(32),
         ]));
+
+        // 寄送信箱驗證信件
+        Mail::to($user->email)->queue(new ConfirmEmail());
 
         return (new UserResource($user))->toResponse();
     }
