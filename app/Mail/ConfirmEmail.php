@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 /**
- * This file is part of hyperf-ext/mail.
+ * This file is part of Hyperf.
  *
- * @link     https://github.com/hyperf-ext/mail
- * @contact  eric@zhu.email
- * @license  https://github.com/hyperf-ext/mail/blob/master/LICENSE
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 namespace App\Mail;
 
@@ -22,7 +23,6 @@ class ConfirmEmail extends Mailable implements ShouldQueue
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -31,6 +31,6 @@ class ConfirmEmail extends Mailable implements ShouldQueue
     public function build(): void
     {
         $this->subject('信箱驗證信件')
-                ->htmlBody('hello world');
+            ->htmlBody('hello world');
     }
 }
