@@ -12,15 +12,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Request\AuthRequest;
-use Hyperf\HttpServer\Annotation\PostMapping;
-use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\PostMapping;
 
 /**
  * @Controller(prefix="auth")
  * Class AuthController
- * @package App\Controller
  */
 class AuthController extends AbstractController
 {
