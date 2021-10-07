@@ -13,6 +13,8 @@
     "license": "Apache-2.0",
     "require": {
         "php": ">=7.3",
+        "ext-json": "*",
+        "gokure/hyperf-tinker": "^1.0",
         "hyperf/async-queue": "~2.2.0",
         "hyperf/cache": "~2.2.0",
         "hyperf/command": "~2.2.0",
@@ -29,8 +31,7 @@
         "hyperf/process": "~2.2.0",
         "hyperf/redis": "~2.2.0",
         "hyperf/tracer": "~2.2.0",
-        "hyperf/validation": "^2.2",
-        "ext-json": "*"
+        "hyperf/validation": "^2.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
