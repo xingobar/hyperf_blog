@@ -9,8 +9,16 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-return [
-    'http' => [
-        \Hyperf\Validation\Middleware\ValidationMiddleware::class,
-    ],
-];
+namespace App\Service;
+
+use App\Repository\UserRepository;
+use Hyperf\Di\Annotation\Inject;
+
+class UserService
+{
+    /**
+     * @Inject
+     * @var UserRepository
+     */
+    public $userRepository;
+}
