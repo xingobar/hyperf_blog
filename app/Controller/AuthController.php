@@ -15,11 +15,13 @@ use App\Contracts\UserServiceInterface;
 use App\Exception\InvalidRequestException;
 use App\Exception\NotFoundException;
 use App\Mail\ConfirmEmail;
+use App\Middleware\AuthenticateMiddleware;
 use App\Request\AuthRequest;
 use App\Request\VerifyEmailRequest;
 use App\Resource\UserResource;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\Utils\Str;
 use HyperfExt\Mail\Mail;
@@ -108,5 +110,16 @@ class AuthController extends AbstractController
         return $this->response->json([
             'token' => $token,
         ]);
+    }
+
+    /**
+     * @Middleware(AuthenticateMiddleware::class)
+     * @PostMapping(path="logout")
+     */
+    public function logout()
+    {
+        auth()->logout();
+
+        return $this->response->json('OK');
     }
 }

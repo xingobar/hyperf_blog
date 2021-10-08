@@ -12,11 +12,14 @@ declare(strict_types=1);
 namespace App\Model;
 
 use Hyperf\Database\Model\SoftDeletes;
-use Qbhy\HyperfAuth\Authenticatable;
+use HyperfExt\Auth\Authenticatable;
+use HyperfExt\Auth\Contracts\AuthenticatableInterface;
+use HyperfExt\Jwt\Contracts\JwtSubjectInterface;
 
-class User extends Model implements Authenticatable
+class User extends Model implements AuthenticatableInterface, JwtSubjectInterface
 {
     use SoftDeletes;
+    use Authenticatable;
 
     public const GENDER_MALE = 'MALE';
 
@@ -52,13 +55,18 @@ class User extends Model implements Authenticatable
         'verified' => 'boolean',
     ];
 
-    public function getId()
+    public function getJwtIdentifier()
     {
-        // TODO: Implement getId() method.
+        return $this->getKey();
     }
 
-    public static function retrieveById($key): ?Authenticatable
+    /**
+     * JWT自定義載荷.
+     */
+    public function getJwtCustomClaims(): array
     {
-        // TODO: Implement retrieveById() method.
+        return [
+            'guard' => 'api',    // 新增一個自定義載荷儲存守護名稱，方便後續判斷
+        ];
     }
 }

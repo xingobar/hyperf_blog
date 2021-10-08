@@ -14,6 +14,7 @@ namespace App\Exception\Handler;
 use App\Exception\NotFoundException;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use HyperfExt\Auth\Exceptions\AuthenticationException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -33,6 +34,16 @@ class RequestExceptionHandler extends ExceptionHandler
             $this->stopPropagation();
 
             return $response->withStatus(404)->withBody(new SwooleStream($data));
+        }
+        if ($throwable instanceof AuthenticationException) {
+            $data = json_encode([
+                'code' => 401,
+                'message' => $throwable->getMessage(),
+            ], JSON_UNESCAPED_UNICODE);
+
+            $this->stopPropagation();
+
+            return $response->withStatus(401)->withBody(new SwooleStream($data));
         }
 
         return $response;
