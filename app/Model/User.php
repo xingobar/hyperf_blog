@@ -69,4 +69,13 @@ class User extends Model implements AuthenticatableInterface, JwtSubjectInterfac
             'guard' => 'api',    // 新增一個自定義載荷儲存守護名稱，方便後續判斷
         ];
     }
+
+    /**
+     * 文章.
+     * @return \Hyperf\Database\Model\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
 }
