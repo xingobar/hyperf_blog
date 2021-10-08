@@ -12,8 +12,9 @@ declare(strict_types=1);
 namespace App\Model;
 
 use Hyperf\Database\Model\SoftDeletes;
+use Qbhy\HyperfAuth\Authenticatable;
 
-class User extends Model
+class User extends Model implements Authenticatable
 {
     use SoftDeletes;
 
@@ -50,4 +51,14 @@ class User extends Model
     protected $casts = [
         'verified' => 'boolean',
     ];
+
+    public function getId()
+    {
+        // TODO: Implement getId() method.
+    }
+
+    public static function retrieveById($key): ?Authenticatable
+    {
+        // TODO: Implement retrieveById() method.
+    }
 }

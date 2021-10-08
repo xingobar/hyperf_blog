@@ -103,6 +103,10 @@ class AuthController extends AbstractController
             throw new InvalidRequestException('帳號或密碼錯誤');
         }
 
-        return (new UserResource($user))->toResponse();
+        $token = auth()->login($user);
+
+        return $this->response->json([
+            'token' => $token,
+        ]);
     }
 }

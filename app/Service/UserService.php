@@ -52,7 +52,6 @@ class UserService implements UserServiceInterface
 
     /**
      * 檢查密碼是否一致.
-     * @return bool
      */
     public function checkSamePassword(User $user, string $password): bool
     {
