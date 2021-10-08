@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Contracts\UserServiceInterface;
+use App\Exception\InvalidRequestException;
 use App\Exception\NotFoundException;
 use App\Mail\ConfirmEmail;
 use App\Request\AuthRequest;
@@ -78,6 +79,29 @@ class AuthController extends AbstractController
             'verified' => true,
             'verifed_at' => time(),
         ]);
+
+        return (new UserResource($user))->toResponse();
+    }
+
+    /**
+     * @PostMapping(path="login")
+     * 登入
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function login()
+    {
+        $request = $this->container->get(AuthRequest::class);
+        $request->scene('login')->validateResolved();
+
+        $params = $request->inputs(['account', 'password']);
+
+        if (! $user = $this->userService->findByAccount($params['account'])) {
+            throw new NotFoundException();
+        }
+
+        if (! $this->userService->checkSamePassword($user, $params['password'])) {
+            throw new InvalidRequestException('帳號或密碼錯誤');
+        }
 
         return (new UserResource($user))->toResponse();
     }

@@ -47,5 +47,7 @@ class User extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'verified' => 'boolean',
+    ];
 }

@@ -15,6 +15,7 @@ use App\Contracts\UserServiceInterface;
 use App\Model\User;
 use App\Repository\UserRepository;
 use Hyperf\Di\Annotation\Inject;
+use HyperfExt\Hashing\Hash;
 
 class UserService implements UserServiceInterface
 {
@@ -39,5 +40,22 @@ class UserService implements UserServiceInterface
     public function findByConfirmToken(string $confirmToken): ?User
     {
         return $this->userRepository->findByConfirmToken($confirmToken);
+    }
+
+    /**
+     * 根據帳號取得會員
+     */
+    public function findByAccount(string $account): ?User
+    {
+        return $this->userRepository->findByAccount($account);
+    }
+
+    /**
+     * 檢查密碼是否一致.
+     * @return bool
+     */
+    public function checkSamePassword(User $user, string $password): bool
+    {
+        return Hash::check($password, strval($user->password));
     }
 }

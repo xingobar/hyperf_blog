@@ -19,6 +19,9 @@ class AuthRequest extends FormRequest
         'register' => [
             'account', 'email', 'password', 'confirm_password',
         ],
+        'login' => [
+            'account', 'password',
+        ],
     ];
 
     /**
@@ -34,6 +37,13 @@ class AuthRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->getScene() === 'login') {
+            return [
+                'account' => 'required|min:6',
+                'password' => 'required',
+            ];
+        }
+
         return [
             'account' => 'required|min:6|unique:users,account',
             'email' => 'required|email|unique:users,email',

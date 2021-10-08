@@ -37,4 +37,14 @@ class UserRepository
         return User::where('confirm_token', $token)
             ->first();
     }
+
+    /**
+     * 根據帳號取得會員資料.
+     *
+     * @return null|\Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object
+     */
+    public function findByAccount(string $account): ?User
+    {
+        return User::where('account', $account)->first();
+    }
 }

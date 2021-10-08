@@ -24,4 +24,14 @@ interface UserServiceInterface
      * 根據 confirm token 取得會員
      */
     public function findByConfirmToken(string $confirmToken): ?User;
+
+    /**
+     * 根據帳號取得會員
+     */
+    public function findByAccount(string $account): ?User;
+
+    /**
+     * 檢查密碼是否一致.
+     */
+    public function checkSamePassword(User $user, string $password): bool;
 }
