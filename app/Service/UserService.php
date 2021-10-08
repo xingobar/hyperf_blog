@@ -32,4 +32,12 @@ class UserService implements UserServiceInterface
     {
         return $this->userRepository->create($params);
     }
+
+    /**
+     * 根據 confirm token 取得會員
+     */
+    public function findByConfirmToken(string $confirmToken): ?User
+    {
+        return $this->userRepository->findByConfirmToken($confirmToken);
+    }
 }

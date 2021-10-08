@@ -12,8 +12,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Contracts\UserServiceInterface;
+use App\Exception\NotFoundException;
 use App\Mail\ConfirmEmail;
 use App\Request\AuthRequest;
+use App\Request\VerifyEmailRequest;
 use App\Resource\UserResource;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -53,6 +55,29 @@ class AuthController extends AbstractController
 
         // 寄送信箱驗證信件
         Mail::to($user->email)->queue(new ConfirmEmail());
+
+        return (new UserResource($user))->toResponse();
+    }
+
+    /**
+     * 信箱驗證會員
+     * @PostMapping(path="verify")
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function verify(VerifyEmailRequest $request)
+    {
+        $params = $request->inputs(['token']);
+
+        if (! $user = $this->userService->findByConfirmToken($params['token'])) {
+            throw new NotFoundException();
+        }
+
+        $user->update([
+            'confirm_token' => null,
+            'verified' => true,
+            'verifed_at' => time(),
+        ]);
 
         return (new UserResource($user))->toResponse();
     }

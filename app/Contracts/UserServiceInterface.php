@@ -15,5 +15,13 @@ use App\Model\User;
 
 interface UserServiceInterface
 {
+    /**
+     * 新增會員
+     */
     public function createUser(array $params): User;
+
+    /**
+     * 根據 confirm token 取得會員
+     */
+    public function findByConfirmToken(string $confirmToken): ?User;
 }
