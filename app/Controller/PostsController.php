@@ -24,6 +24,11 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 class PostsController extends AbstractController
 {
     /**
+     * 每頁 10 筆資料.
+     */
+    public const LIST_PAGE = 10;
+
+    /**
      * @Inject
      * @var PostService
      */
@@ -34,7 +39,9 @@ class PostsController extends AbstractController
      */
     public function index()
     {
-        $posts = $this->postService->findPaginator();
+        $limit = $this->request->input('limit', self::LIST_PAGE);
+        $params = $this->request->inputs(['keyword', 'price']);
+        $posts = $this->postService->findPaginator($params, $limit);
 
         return PostResource::collection($posts)->toResponse();
     }

@@ -16,7 +16,8 @@ use Hyperf\Contract\LengthAwarePaginatorInterface;
 interface PostServiceInterface
 {
     /**
-     * @return array
+     * 取得文章分頁資料.
+     * @param int $limit - 每頁幾筆資料
      */
-    public function findPaginator(int $limit = 10): LengthAwarePaginatorInterface;
+    public function findPaginator(array $params = [], int $limit = 10): LengthAwarePaginatorInterface;
 }

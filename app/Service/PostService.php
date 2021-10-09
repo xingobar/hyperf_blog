@@ -24,8 +24,8 @@ class PostService implements PostServiceInterface
      */
     public $postRepository;
 
-    public function findPaginator(int $limit = 10): LengthAwarePaginatorInterface
+    public function findPaginator(array $params = [], int $limit = 10): LengthAwarePaginatorInterface
     {
-        return $this->postRepository->findPaginator($limit);
+        return $this->postRepository->findPaginator($params, $limit);
     }
 }
