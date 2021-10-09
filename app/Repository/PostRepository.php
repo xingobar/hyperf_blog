@@ -25,6 +25,7 @@ class PostRepository
         return Post::orderBy('created_at', 'DESC')
             ->with([
                 'owner',
+                'category',
             ])
             // 關鍵字
             ->when(isset($params['keyword']), function ($builder) use ($params) {
@@ -55,5 +56,17 @@ class PostRepository
                 }
             })
             ->paginate($limit);
+    }
+
+    /**
+     * 根據編號取得文章.
+     *
+     * @return null|\Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object
+     */
+    public function findByIdWithPublished(int $postId): ?Post
+    {
+        return Post::where('id', $postId)
+            ->where('status', Post::STATUS_PUBLISH)
+            ->first();
     }
 }

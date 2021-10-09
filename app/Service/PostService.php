@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Contracts\PostServiceInterface;
+use App\Model\Post;
 use App\Repository\PostRepository;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
 use Hyperf\Di\Annotation\Inject;
@@ -27,5 +28,14 @@ class PostService implements PostServiceInterface
     public function findPaginator(array $params = [], int $limit = 10): LengthAwarePaginatorInterface
     {
         return $this->postRepository->findPaginator($params, $limit);
+    }
+
+    /**
+     * @param int $postId - 文章編號
+     * @return null|\Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|Post
+     */
+    public function findByIdWithPublished(int $postId): ?Post
+    {
+        return $this->postRepository->findByIdWithPublished($postId);
     }
 }

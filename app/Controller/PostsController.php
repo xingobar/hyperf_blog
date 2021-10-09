@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Exception\NotFoundException;
 use App\Resource\PostResource;
 use App\Service\PostService;
 use Hyperf\Di\Annotation\Inject;
@@ -44,5 +45,25 @@ class PostsController extends AbstractController
         $posts = $this->postService->findPaginator($params, $limit);
 
         return PostResource::collection($posts)->toResponse();
+    }
+
+    /**
+     * @GetMapping(path="{id}")
+     *
+     * @param int $id - 文章編號
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function show(int $id)
+    {
+        if (! $post = $this->postService->findByIdWithPublished($id)) {
+            throw new NotFoundException();
+        }
+
+        $post->load([
+            'owner',
+            'category',
+        ]);
+
+        return (new PostResource($post))->toResponse();
     }
 }

@@ -31,8 +31,15 @@ class PostResource extends JsonResource
             'price' => intval($this->price),
             'created_at' => strval($this->created_at),
             'updated_at' => strval($this->updated_at),
+
+            // 文章創建者
             'owner' => $this->when($this->relationLoaded('owner'), function () {
                 return new UserResource($this->owner);
+            }),
+
+            // 文章分類
+            'category' => $this->when($this->relationLoaded('category'), function () {
+                return new CategoryResource($this->category);
             }),
         ];
     }
