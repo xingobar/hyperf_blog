@@ -23,7 +23,7 @@ class UserService implements UserServiceInterface
      * @Inject
      * @var UserRepository
      */
-    public $userRepository;
+    protected $userRepository;
 
     /**
      * 新增會員

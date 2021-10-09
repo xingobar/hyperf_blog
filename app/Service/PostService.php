@@ -11,14 +11,21 @@ declare(strict_types=1);
  */
 namespace App\Service;
 
+use App\Contracts\PostServiceInterface;
 use App\Repository\PostRepository;
+use Hyperf\Contract\LengthAwarePaginatorInterface;
 use Hyperf\Di\Annotation\Inject;
 
-class PostService
+class PostService implements PostServiceInterface
 {
     /**
      * @Inject
      * @var PostRepository
      */
     public $postRepository;
+
+    public function findPaginator(int $limit = 10): LengthAwarePaginatorInterface
+    {
+        return $this->postRepository->findPaginator($limit);
+    }
 }

@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Resource\PostResource;
 use App\Service\PostService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -33,5 +34,8 @@ class PostsController extends AbstractController
      */
     public function index()
     {
+        $posts = $this->postService->findPaginator();
+
+        return PostResource::collection($posts)->toResponse();
     }
 }

@@ -12,4 +12,5 @@ declare(strict_types=1);
 return [
     \App\Contracts\UserServiceInterface::class => \App\Service\UserService::class,
     \Hyperf\Database\Model\Factory::class => \App\Service\ModelFactory::class,
+    \App\Contracts\PostServiceInterface::class => \App\Service\PostService::class,
 ];

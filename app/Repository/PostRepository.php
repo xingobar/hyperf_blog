@@ -11,6 +11,18 @@ declare(strict_types=1);
  */
 namespace App\Repository;
 
+use App\Model\Post;
+
 class PostRepository
 {
+    /**
+     * 文章分頁
+     * @param int $limit - 每頁幾筆資料
+     * @return \Hyperf\Contract\LengthAwarePaginatorInterface
+     */
+    public function findPaginator(int $limit = 10)
+    {
+        return Post::orderBy('created_at', 'DESC')
+            ->paginate($limit);
+    }
 }
