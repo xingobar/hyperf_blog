@@ -40,7 +40,7 @@ class PostsController extends AbstractController
     public function index()
     {
         $limit = $this->request->input('limit', self::LIST_PAGE);
-        $params = $this->request->inputs(['keyword', 'price']);
+        $params = $this->request->inputs(['keyword', 'price', 'category']);
         $posts = $this->postService->findPaginator($params, $limit);
 
         return PostResource::collection($posts)->toResponse();

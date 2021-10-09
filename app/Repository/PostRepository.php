@@ -23,6 +23,9 @@ class PostRepository
     public function findPaginator(array $params = [], int $limit = 10)
     {
         return Post::orderBy('created_at', 'DESC')
+            ->with([
+                'owner',
+            ])
             // 關鍵字
             ->when(isset($params['keyword']), function ($builder) use ($params) {
                 $builder->where(function ($builder) use ($params) {
@@ -31,6 +34,10 @@ class PostRepository
                         ->orWhere('headline', 'like', $keyword)
                         ->orWhere('description', 'like', $keyword);
                 });
+            })
+            // 分類
+            ->when(isset($params['category']), function ($builder) use ($params) {
+                $builder->where('category_id', $params['category']);
             })
             // 文章狀態
             ->when(isset($params['status']) && in_array($params['status'], array_keys(Post::$statusMap)), function ($builder) use ($params) {

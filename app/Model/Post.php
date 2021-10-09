@@ -11,8 +11,12 @@ declare(strict_types=1);
  */
 namespace App\Model;
 
+use Hyperf\Database\Model\SoftDeletes;
+
 class Post extends Model
 {
+    use SoftDeletes;
+
     public const STATUS_DRAFT = 'DRAFT';
 
     public const STATUS_PUBLISH = 'PUBLISH';
@@ -39,7 +43,7 @@ class Post extends Model
      */
     protected $fillable = [
         'user_id', 'title', 'description', 'headline', 'image', 'image_filename',
-        'status', 'price',
+        'status', 'price', 'category_id',
     ];
 
     /**
@@ -59,5 +63,14 @@ class Post extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * 文章分類.
+     * @return \Hyperf\Database\Model\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 }
