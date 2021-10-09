@@ -12,13 +12,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Contracts\UserServiceInterface;
-use App\Mail\ConfirmEmail;
+use App\Mail\VerifyEmail;
 use App\Middleware\AuthenticateMiddleware;
+use App\Middleware\VerifyJwtTokenMiddleware;
 use App\Request\UpdateUserRequest;
 use App\Resource\UserResource;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Hyperf\Utils\Str;
 use HyperfExt\Hashing\Hash;
@@ -37,7 +39,10 @@ class MeController extends AbstractController
     public $userService;
 
     /**
-     * @Middleware(AuthenticateMiddleware::class)
+     * @Middlewares({
+     *     @Middleware(VerifyJwtTokenMiddleware::class),
+     *     @Middleware(AuthenticateMiddleware::class)
+     * })
      * @PutMapping(path="")
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -50,7 +55,7 @@ class MeController extends AbstractController
         // 因為更改信箱, 所以要重新驗證
         if (isset($params['email'])) {
             // 寄送信箱驗證信件
-            Mail::to($params['email'])->queue(new ConfirmEmail());
+            Mail::to($params['email'])->queue(new VerifyEmail());
             auth()->user()->update([
                 'confirm_token' => Str::random(32),
             ]);

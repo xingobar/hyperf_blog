@@ -25,3 +25,13 @@ if (! function_exists('auth')) {
         return make(\HyperfExt\Auth\Contracts\AuthManagerInterface::class)->guard($guard);
     }
 }
+
+/*
+ * 取得現在時間
+ */
+if (! function_exists('now')) {
+    function now($tz = null)
+    {
+        return \Carbon\Carbon::now($tz);
+    }
+}

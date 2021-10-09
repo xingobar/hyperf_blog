@@ -36,7 +36,8 @@
         "hyperf/redis": "~2.2.0",
         "hyperf/resource": "^2.2",
         "hyperf/tracer": "~2.2.0",
-        "hyperf/validation": "^2.2"
+        "hyperf/validation": "^2.2",
+        "nesbot/carbon": "^2.53"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",

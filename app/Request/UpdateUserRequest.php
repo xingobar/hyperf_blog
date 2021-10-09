@@ -31,7 +31,7 @@ class UpdateUserRequest extends FormRequest
     {
         $array = [];
         if ($this->has('email')) {
-            $array['email'] = 'required|email|unique:users,email,' . auth()->user()->id . ',id';
+            $array['email'] = 'required|email|unique:users,email,' . auth()->user()->id;
         }
 
         if ($this->has('gender')) {

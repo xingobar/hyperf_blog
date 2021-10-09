@@ -79,7 +79,7 @@ class AuthController extends AbstractController
         $user->update([
             'confirm_token' => null,
             'verified' => true,
-            'verifed_at' => time(),
+            'verifed_at' => now(),
         ]);
 
         return (new UserResource($user))->toResponse();
