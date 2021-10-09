@@ -9,7 +9,15 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-return [
-    \App\Contracts\UserServiceInterface::class => \App\Service\UserService::class,
-    \Hyperf\Database\Model\Factory::class => \App\Service\ModelFactory::class,
-];
+use Hyperf\Database\Seeders\Seeder;
+
+class UserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run()
+    {
+        factory(\App\Model\User::class)->create();
+    }
+}

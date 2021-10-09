@@ -35,3 +35,25 @@ if (! function_exists('now')) {
         return \Carbon\Carbon::now($tz);
     }
 }
+
+// factory
+if (! function_exists('factory')) {
+    /**
+     * @return \Hyperf\Database\Model\FactoryBuilder
+     */
+    function factory()
+    {
+        $factory = make(\Hyperf\Database\Model\Factory::class);
+
+        $arguments = func_get_args();
+
+        if (isset($arguments[1]) && is_string($arguments[1])) {
+            return $factory->of($arguments[0], $arguments[1])->times($arguments[2] ?? null);
+        }
+        if (isset($arguments[1])) {
+            return $factory->of($arguments[0])->times($arguments[1]);
+        }
+
+        return $factory->of($arguments[0]);
+    }
+}

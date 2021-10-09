@@ -9,7 +9,16 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-return [
-    \App\Contracts\UserServiceInterface::class => \App\Service\UserService::class,
-    \Hyperf\Database\Model\Factory::class => \App\Service\ModelFactory::class,
-];
+namespace App\Service;
+
+use App\Repository\PostRepository;
+use Hyperf\Di\Annotation\Inject;
+
+class PostService
+{
+    /**
+     * @Inject
+     * @var PostRepository
+     */
+    public $postRepository;
+}

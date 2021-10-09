@@ -14,6 +14,7 @@
     "require": {
         "php": ">=7.3",
         "ext-json": "*",
+        "fzaninotto/faker": "^1.9",
         "gokure/hyperf-tinker": "^1.0",
         "hyperf-ext/auth": "^2.2",
         "hyperf-ext/hashing": "^2.2",
