@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Model;
 
+use App\Repository\PostRepository;
 use Hyperf\Database\Model\SoftDeletes;
 
 class Post extends Model
@@ -28,6 +29,8 @@ class Post extends Model
         self::STATUS_DRAFT => '草稿',
         self::STATUS_OFFLINE => '下架',
     ];
+
+    protected $repository = PostRepository::class;
 
     /**
      * The table associated with the model.

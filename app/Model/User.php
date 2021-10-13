@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Model;
 
+use App\Repository\UserRepository;
 use Hyperf\Database\Model\SoftDeletes;
 use HyperfExt\Auth\Authenticatable;
 use HyperfExt\Auth\Contracts\AuthenticatableInterface;
@@ -29,6 +30,8 @@ class User extends Model implements AuthenticatableInterface, JwtSubjectInterfac
         self::GENDER_FEMALE => '女性',
         self::GENDER_MALE => '男性',
     ];
+
+    protected $repository = UserRepository::class;
 
     /**
      * The table associated with the model.
