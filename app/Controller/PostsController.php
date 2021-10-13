@@ -19,6 +19,7 @@ use App\Resource\PostResource;
 use App\Service\PostService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PutMapping;
@@ -103,5 +104,29 @@ class PostsController extends AbstractController
         ]);
 
         return (new PostResource($post))->toResponse();
+    }
+
+    /**
+     * 刪除文章.
+     * @Middleware(AuthenticateMiddleware::class)
+     * @DeleteMapping(path="{id}")
+     *
+     * @param int $id - 文章編號
+     * @throws \Exception
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function delete(int $id)
+    {
+        if (! $post = $this->postService->findByIdWithPublished($id)) {
+            throw new NotFoundException();
+        }
+
+        if (! $post->getPolicy()->delete(auth()->user(), $post)) {
+            throw new AccessDeniedException();
+        }
+
+        $post->delete();
+
+        return (new PostResource($post))->getResponse();
     }
 }

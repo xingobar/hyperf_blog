@@ -25,4 +25,9 @@ class PostPolicy
     {
         return $user->id === $post->user_id;
     }
+
+    public function delete(?AuthenticatableInterface $user, Post $post)
+    {
+        return $this->update($user, $post);
+    }
 }
