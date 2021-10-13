@@ -18,6 +18,7 @@ interface PostServiceInterface
 {
     /**
      * 取得文章分頁資料.
+     *
      * @param int $limit - 每頁幾筆資料
      */
     public function findPaginator(array $params = [], int $limit = 10): LengthAwarePaginatorInterface;
