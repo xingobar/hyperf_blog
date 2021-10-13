@@ -83,6 +83,9 @@ class PostsController extends AbstractController
      * 更新文章.
      * @Middleware(AuthenticateMiddleware::class)
      * @PutMapping(path="{id}")
+     *
+     * @param int $id - 文章編號
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function update(int $id)
