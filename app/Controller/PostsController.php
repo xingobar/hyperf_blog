@@ -14,7 +14,6 @@ namespace App\Controller;
 use App\Exception\AccessDeniedException;
 use App\Exception\NotFoundException;
 use App\Middleware\AuthenticateMiddleware;
-use App\Policy\PostPolicy;
 use App\Request\PostRequest;
 use App\Resource\PostResource;
 use App\Service\PostService;
@@ -40,12 +39,6 @@ class PostsController extends AbstractController
      * @var PostService
      */
     public $postService;
-
-    /**
-     * @Inject
-     * @var PostPolicy
-     */
-    public $postPolicy;
 
     /**
      * @GetMapping(path="")
@@ -99,7 +92,7 @@ class PostsController extends AbstractController
 
         $params = $request->validated();
 
-        if (! $this->postPolicy->update(auth()->user(), $post)) {
+        if (! $post->getPolicy()->update(auth()->user(), $post)) {
             throw new AccessDeniedException();
         }
 
