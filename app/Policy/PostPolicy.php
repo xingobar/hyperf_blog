@@ -16,7 +16,7 @@ use HyperfExt\Auth\Annotations\Policy;
 use HyperfExt\Auth\Contracts\AuthenticatableInterface;
 
 /**
- * @Policy(models="Post")
+ * @Policy(models={"Post"})
  * Class PostPolicy
  */
 class PostPolicy
