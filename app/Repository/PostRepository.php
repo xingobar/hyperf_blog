@@ -61,6 +61,8 @@ class PostRepository
     /**
      * 根據編號取得文章.
      *
+     * @param int postId - 文章編號
+     *
      * @return null|\Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object
      */
     public function findByIdWithPublished(int $postId): ?Post

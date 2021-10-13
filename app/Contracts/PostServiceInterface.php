@@ -24,7 +24,8 @@ interface PostServiceInterface
 
     /**
      * 根據編號取得發佈的文章.
-     * @param int $postId - 文章編號
+     *
+     * @return mixed
      */
     public function findByIdWithPublished(int $postId): ?Post;
 }

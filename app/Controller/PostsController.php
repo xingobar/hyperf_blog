@@ -11,12 +11,18 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Exception\AccessDeniedException;
 use App\Exception\NotFoundException;
+use App\Middleware\AuthenticateMiddleware;
+use App\Policy\PostPolicy;
+use App\Request\PostRequest;
 use App\Resource\PostResource;
 use App\Service\PostService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Annotation\PutMapping;
 
 /**
  * @Controller(prefix="posts")
@@ -34,6 +40,12 @@ class PostsController extends AbstractController
      * @var PostService
      */
     public $postService;
+
+    /**
+     * @Inject
+     * @var PostPolicy
+     */
+    public $postPolicy;
 
     /**
      * @GetMapping(path="")
@@ -61,6 +73,36 @@ class PostsController extends AbstractController
 
         $post->load([
             'owner',
+            'category',
+        ]);
+
+        return (new PostResource($post))->toResponse();
+    }
+
+    /**
+     * 更新文章.
+     * @Middleware(AuthenticateMiddleware::class)
+     * @PutMapping(path="{id}")
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function update(int $id)
+    {
+        $request = $this->container->get(PostRequest::class);
+        $request->scene('update')->validateResolved();
+
+        if (! $post = $this->postService->findByIdWithPublished($id)) {
+            throw new NotFoundException();
+        }
+
+        $params = $request->validated();
+
+        if (! $this->postPolicy->update(auth()->user(), $post)) {
+            throw new AccessDeniedException();
+        }
+
+        $post->update($params);
+
+        $post->load([
             'category',
         ]);
 

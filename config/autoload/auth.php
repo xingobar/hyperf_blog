@@ -140,5 +140,6 @@ return [
 
     'policies' => [
         //Model::class => Policy::class,
+        \App\Model\Post::class => \App\Policy\PostPolicy::class,
     ],
 ];

@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Exception\Handler;
 
+use App\Exception\AccessDeniedException;
 use App\Exception\NotFoundException;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -44,6 +45,17 @@ class RequestExceptionHandler extends ExceptionHandler
             $this->stopPropagation();
 
             return $response->withStatus(401)->withBody(new SwooleStream($data));
+        }
+
+        if ($throwable instanceof AccessDeniedException) {
+            $data = json_encode([
+                'code' => $throwable->getCode(),
+                'message' => $throwable->getMessage(),
+            ], JSON_UNESCAPED_UNICODE);
+
+            $this->stopPropagation();
+
+            return $response->withStatus(403)->withBody(new SwooleStream($data));
         }
 
         return $response;
