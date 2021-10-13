@@ -78,3 +78,13 @@ if (! function_exists('response')) {
         return make(\Hyperf\HttpServer\Contract\ResponseInterface::class);
     }
 }
+
+if (! function_exists('policy')) {
+    function policy($model)
+    {
+        if (! class_exists(config('auth.policies')[get_class($model)])) {
+            throw new RuntimeException(sprintf('找不到 %s', get_class(config('auth.policies')[get_class($model)])));
+        }
+        return make(config('auth.policies')[get_class($model)]);
+    }
+}
