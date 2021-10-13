@@ -57,3 +57,24 @@ if (! function_exists('factory')) {
         return $factory->of($arguments[0]);
     }
 }
+
+if (! function_exists('request')) {
+    function request()
+    {
+        return make(\Hyperf\HttpServer\Contract\RequestInterface::class);
+    }
+}
+
+if (! function_exists('container')) {
+    function container()
+    {
+        return \Hyperf\Utils\ApplicationContext::getContainer();
+    }
+}
+
+if (! function_exists('response')) {
+    function response()
+    {
+        return make(\Hyperf\HttpServer\Contract\ResponseInterface::class);
+    }
+}
