@@ -16,6 +16,7 @@ use Hyperf\Database\Model\Factory;
 $factory->define(\App\Model\Post::class, function (Faker $faker) {
     return [
         'user_id' => \factory(\App\Model\User::class)->create()->id,
+        'category_id' => \factory(\App\Model\Category::class)->create()->id,
         'title' => $faker->sentence,
         'description' => $faker->sentence,
         'headline' => $faker->sentence,

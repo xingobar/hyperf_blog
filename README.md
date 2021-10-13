@@ -17,3 +17,9 @@ $ php watch
 
 ##### ext-auth
 1. https://iter01.com/569139.html
+
+#### helper function
+1. https://learnku.com/articles/34324
+
+#### factory
+1. https://github.com/hyperf/hyperf/issues/2203
