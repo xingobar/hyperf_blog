@@ -19,10 +19,12 @@ class PostRequest extends FormRequest
         'update' => [
             'title', 'headline', 'description',
             'image', 'image_filename', 'price',
+            'category_id',
         ],
         'create' => [
             'title', 'headline', 'description',
             'image', 'image_filename', 'price',
+            'category_id',
         ],
     ];
 
@@ -50,6 +52,7 @@ class PostRequest extends FormRequest
             'image' => 'required',
             'image_filename' => 'required',
             'price' => 'required|integer|min:0',
+            'category_id' => 'required|integer',
         ];
     }
 
@@ -67,6 +70,8 @@ class PostRequest extends FormRequest
             'price.required' => '請傳入文章價格',
             'price.integer' => '價格型別有誤',
             'price.min' => '價格至少 :min 元',
+            'category_id.required' => '請傳入分類編號',
+            'category_id.integer' => '分類編號型別有誤',
         ];
     }
 
@@ -95,6 +100,10 @@ class PostRequest extends FormRequest
 
         if ($this->has('price')) {
             $rules['price'] = 'required|integer|min:0';
+        }
+
+        if ($this->has('category_id')) {
+            $rules['category_id'] = 'required|integer';
         }
 
         return $rules;

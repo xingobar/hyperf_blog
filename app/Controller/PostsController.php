@@ -11,12 +11,13 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Contracts\CategoryServiceInterface;
+use App\Contracts\PostServiceInterface;
 use App\Exception\AccessDeniedException;
 use App\Exception\NotFoundException;
 use App\Middleware\AuthenticateMiddleware;
 use App\Request\PostRequest;
 use App\Resource\PostResource;
-use App\Service\PostService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
@@ -38,9 +39,15 @@ class PostsController extends AbstractController
 
     /**
      * @Inject
-     * @var PostService
+     * @var PostServiceInterface
      */
     public $postService;
+
+    /**
+     * @Inject
+     * @var CategoryServiceInterface
+     */
+    public $categoryService;
 
     /**
      * @GetMapping(path="")
@@ -94,6 +101,10 @@ class PostsController extends AbstractController
 
         $params = $request->validated();
 
+        if (! $category = $this->categoryService->findById($params['category_id'])) {
+            throw new NotFoundException();
+        }
+
         if (! $post->getPolicy()->update(auth()->user(), $post)) {
             throw new AccessDeniedException();
         }
@@ -144,9 +155,15 @@ class PostsController extends AbstractController
 
         $params = $request->validated();
 
+        if (! $category = $this->categoryService->findById($params['category_id'])) {
+            throw new NotFoundException();
+        }
+
         $post = $this->postService->createPost(array_merge([
             'user_id' => auth()->user()->id,
         ], $params));
+
+        $post->load(['category']);
 
         return (new PostResource($post))->toResponse();
     }
