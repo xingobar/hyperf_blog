@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Service;
 
-use App\Contracts\CategoryServiceInterface;
+use App\Contracts\Service\CategoryServiceInterface;
 use App\Model\Category;
 use App\Repository\CategoryRepository;
 use Hyperf\Di\Annotation\Inject;

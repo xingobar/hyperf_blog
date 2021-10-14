@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Service;
 
-use App\Contracts\UserServiceInterface;
+use App\Contracts\Service\UserServiceInterface;
 use App\Model\User;
 use App\Repository\UserRepository;
 use Hyperf\Di\Annotation\Inject;

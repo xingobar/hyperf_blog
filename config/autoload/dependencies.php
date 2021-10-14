@@ -10,8 +10,8 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 return [
-    \App\Contracts\UserServiceInterface::class => \App\Service\UserService::class,
+    \App\Contracts\Service\UserServiceInterface::class => \App\Service\UserService::class,
     \Hyperf\Database\Model\Factory::class => \App\Service\ModelFactory::class,
-    \App\Contracts\PostServiceInterface::class => \App\Service\PostService::class,
-    \App\Contracts\CategoryServiceInterface::class => \App\Service\CategoryService::class,
+    \App\Contracts\Service\PostServiceInterface::class => \App\Service\PostService::class,
+    \App\Contracts\Service\CategoryServiceInterface::class => \App\Service\CategoryService::class,
 ];

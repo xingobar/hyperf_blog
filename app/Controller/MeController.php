@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use App\Contracts\UserServiceInterface;
+use App\Contracts\Service\UserServiceInterface;
 use App\Mail\VerifyEmail;
 use App\Middleware\AuthenticateMiddleware;
 use App\Middleware\VerifyJwtTokenMiddleware;

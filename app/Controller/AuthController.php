@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use App\Contracts\UserServiceInterface;
+use App\Contracts\Service\UserServiceInterface;
 use App\Exception\InvalidRequestException;
 use App\Exception\NotFoundException;
 use App\Mail\ConfirmEmail;

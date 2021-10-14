@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Service;
 
-use App\Contracts\PostServiceInterface;
+use App\Contracts\Service\PostServiceInterface;
 use App\Model\Post;
 use App\Repository\PostRepository;
 use Hyperf\Contract\LengthAwarePaginatorInterface;

@@ -11,8 +11,8 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use App\Contracts\CategoryServiceInterface;
-use App\Contracts\PostServiceInterface;
+use App\Contracts\Service\CategoryServiceInterface;
+use App\Contracts\Service\PostServiceInterface;
 use App\Exception\AccessDeniedException;
 use App\Exception\NotFoundException;
 use App\Middleware\AuthenticateMiddleware;
