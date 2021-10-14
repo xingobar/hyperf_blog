@@ -101,6 +101,10 @@ class AuthController extends AbstractController
             throw new NotFoundException();
         }
 
+        if (! $user->verified) {
+            throw new InvalidRequestException('信箱尚未驗證');
+        }
+
         if (! $this->userService->checkSamePassword($user, $params['password'])) {
             throw new InvalidRequestException('帳號或密碼錯誤');
         }

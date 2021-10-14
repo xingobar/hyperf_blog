@@ -71,4 +71,12 @@ class PostRepository
             ->where('status', Post::STATUS_PUBLISH)
             ->first();
     }
+
+    /**
+     * 新增文章.
+     */
+    public function create(array $params): Post
+    {
+        return Post::create($params);
+    }
 }

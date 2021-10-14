@@ -38,4 +38,12 @@ class PostService implements PostServiceInterface
     {
         return $this->postRepository->findByIdWithPublished($postId);
     }
+
+    /**
+     * 新增文章.
+     */
+    public function createPost(array $params): Post
+    {
+        return $this->postRepository->create($params);
+    }
 }

@@ -20,6 +20,10 @@ class PostRequest extends FormRequest
             'title', 'headline', 'description',
             'image', 'image_filename', 'price',
         ],
+        'create' => [
+            'title', 'headline', 'description',
+            'image', 'image_filename', 'price',
+        ],
     ];
 
     /**
@@ -35,6 +39,10 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->getScene() === 'update') {
+            return $this->getUpdateRule();
+        }
+
         return [
             'title' => 'required|max:150',
             'headline' => 'present|max:150',
@@ -60,5 +68,35 @@ class PostRequest extends FormRequest
             'price.integer' => '價格型別有誤',
             'price.min' => '價格至少 :min 元',
         ];
+    }
+
+    private function getUpdateRule()
+    {
+        $rules = [];
+        if ($this->has('title')) {
+            $rules['title'] = 'required|max:150';
+        }
+
+        if ($this->has('headline')) {
+            $rules['headline'] = 'required|max:150';
+        }
+
+        if ($this->has('description')) {
+            $rules['description'] = 'required|max:150';
+        }
+
+        if ($this->has('image')) {
+            $rules['image'] = 'required';
+        }
+
+        if ($this->has('image_filename')) {
+            $rules['image_filename'] = 'required';
+        }
+
+        if ($this->has('price')) {
+            $rules['price'] = 'required|integer|min:0';
+        }
+
+        return $rules;
     }
 }

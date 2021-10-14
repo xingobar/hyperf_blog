@@ -22,6 +22,7 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 
 /**
@@ -128,5 +129,25 @@ class PostsController extends AbstractController
         $post->delete();
 
         return (new PostResource($post))->getResponse();
+    }
+
+    /**
+     * @PostMapping(path="")
+     * @Middleware(AuthenticateMiddleware::class)
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function store()
+    {
+        $request = $this->container->get(PostRequest::class);
+        $request->scene('create')->validateResolved();
+
+        $params = $request->validated();
+
+        $post = $this->postService->createPost(array_merge([
+            'user_id' => auth()->user()->id,
+        ], $params));
+
+        return (new PostResource($post))->toResponse();
     }
 }
