@@ -20,6 +20,9 @@ class CommentRequest extends FormRequest
         'create' => [
             'title', 'body',
         ],
+        'update' => [
+            'title', 'body',
+        ],
     ];
 
     /**
@@ -35,10 +38,32 @@ class CommentRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->getScene() === 'update') {
+            return $this->getUpdateRule();
+        }
+
         return [
             'title' => 'required',
             'body' => 'required|min:10',
         ];
+    }
+
+    /**
+     * 設定更新規則.
+     * @return array
+     */
+    public function getUpdateRule()
+    {
+        $rules = [];
+        if ($this->has('title')) {
+            $rules['title'] = 'required';
+        }
+
+        if ($this->has('body')) {
+            $rules['body'] = 'required|min:10';
+        }
+
+        return $rules;
     }
 
     public function messages(): array

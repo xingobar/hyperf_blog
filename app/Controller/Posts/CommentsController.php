@@ -22,6 +22,7 @@ use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Annotation\PutMapping;
 
 /**
  * @Controller(prefix="/posts/{postId}/comments")
@@ -68,6 +69,37 @@ class CommentsController extends AbstractController
         $comment->load([
             'owner',
         ]);
+
+        return (new CommentResource($comment))->toResponse();
+    }
+
+    /**
+     * @PutMapping(path="{commentId}")
+     *
+     * @Middleware(AuthenticateMiddleware::class)
+     *
+     * 更新留言
+     * @param int $postId - 文章編號
+     * @param int $commentId - 留言編號
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function update(int $postId, int $commentId)
+    {
+        $request = $this->container->get(CommentRequest::class);
+
+        $request->scene('update')->validateResolved();
+
+        if (! $post = $this->postService->findByIdWithPublished($postId)) {
+            throw new NotFoundException();
+        }
+
+        if (! $comment = $post->comments()->find($commentId)) {
+            throw new NotFoundException();
+        }
+
+        $params = $request->validated();
+
+        $comment->update($params);
 
         return (new CommentResource($comment))->toResponse();
     }
