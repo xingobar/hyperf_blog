@@ -14,6 +14,7 @@ namespace App\Controller\Posts\Comments;
 use App\Contracts\Service\CommentServiceInterface;
 use App\Contracts\Service\PostServiceInterface;
 use App\Controller\AbstractController;
+use App\Exception\AccessDeniedException;
 use App\Exception\NotFoundException;
 use App\Middleware\AuthenticateMiddleware;
 use App\Request\CommentRequest;
@@ -22,6 +23,7 @@ use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Annotation\PutMapping;
 
 /**
  * @Controller(prefix="/posts/{postId}/comments/{parentId}/children")
@@ -69,6 +71,45 @@ class ChildrenController extends AbstractController
             'parent_id' => $parentId,
             'post_id' => $postId,
         ], $params));
+
+        return (new CommentResource($children))->toResponse();
+    }
+
+    /**
+     * @PutMapping(path="{childrenId}")
+     * @Middleware(AuthenticateMiddleware::class)
+     *
+     * @param int $postId - 文章編號
+     * @param int $parentId - 父層留言編號
+     * @param int $childrenId - 子留言編號
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function update(int $postId, int $parentId, int $childrenId)
+    {
+        $request = $this->container->get(CommentRequest::class);
+        $request->scene('update');
+
+        $request->validateResolved();
+
+        $params = $request->validated();
+
+        if (! $post = $this->postService->findByIdWithPublished($postId)) {
+            throw new NotFoundException();
+        }
+
+        if (! $parent = $post->parentComments()->find($parentId)) {
+            throw new NotFoundException();
+        }
+
+        if (! $children = $parent->children()->find($childrenId)) {
+            throw new NotFoundException();
+        }
+
+        if (! policy($children)->update(auth()->user(), $children)) {
+            throw new AccessDeniedException();
+        }
+
+        $children->update($params);
 
         return (new CommentResource($children))->toResponse();
     }
