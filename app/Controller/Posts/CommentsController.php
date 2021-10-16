@@ -112,6 +112,10 @@ class CommentsController extends AbstractController
 
     /**
      * @DeleteMapping(path="{commentId}")
+     * @Middleware(AuthenticateMiddleware::class)
+     *
+     * @throws \Exception
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function delete(int $postId, int $commentId)
     {
