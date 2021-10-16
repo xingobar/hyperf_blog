@@ -88,4 +88,14 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class, 'post_id', 'id');
     }
+
+    /**
+     * 父層留言
+     * @return \Hyperf\Database\Model\Relations\HasMany
+     */
+    public function parentComments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id')
+            ->whereNull('parent_id');
+    }
 }

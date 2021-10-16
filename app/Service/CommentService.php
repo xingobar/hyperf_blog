@@ -14,6 +14,7 @@ namespace App\Service;
 use App\Contracts\Service\CommentServiceInterface;
 use App\Model\Comment;
 use App\Repository\CommentRepository;
+use Hyperf\Contract\LengthAwarePaginatorInterface;
 use Hyperf\Di\Annotation\Inject;
 
 class CommentService implements CommentServiceInterface
@@ -27,5 +28,10 @@ class CommentService implements CommentServiceInterface
     public function createComment(array $params): Comment
     {
         return $this->commentRepository->create($params);
+    }
+
+    public function findPaginator(array $params = [], int $limit = 10): LengthAwarePaginatorInterface
+    {
+        return $this->commentRepository->findByPaginator($params, $limit);
     }
 }

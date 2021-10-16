@@ -19,4 +19,17 @@ class CommentRepository
     {
         return Comment::create($params);
     }
+
+    public function findByPaginator(array $params = [], int $limit = 10)
+    {
+        return Comment::with([
+            'children',
+        ])
+            ->when(isset($params['post_id']), function ($builder) use ($params) {
+                $builder->where('post_id', $params['post_id']);
+            })
+            ->whereNull('parent_id')
+            ->orderByDesc('created_at')
+            ->paginate($limit);
+    }
 }

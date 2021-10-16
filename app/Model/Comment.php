@@ -52,4 +52,24 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    /**
+     * 取得子留言
+     * @return \Hyperf\Database\Model\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany(Comment::class, 'parent_id', 'id')
+            ->whereNotNull('parent_id');
+    }
+
+    /**
+     * 父層留言
+     * @return \Hyperf\Database\Model\Relations\BelongsTo
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id', 'id')
+            ->whereNull('parent_id');
+    }
 }

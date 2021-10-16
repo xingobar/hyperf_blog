@@ -22,6 +22,7 @@ use App\Resource\CommentResource;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
+use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
@@ -43,6 +44,24 @@ class CommentsController extends AbstractController
      * @var CommentServiceInterface
      */
     public $commentService;
+
+    /**
+     * @GetMapping(path="")
+     * @param int $postId - 文章編號
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function index(int $postId)
+    {
+        $limit = $this->request->input('limit', 10);
+
+        if (! $post = $this->postService->findByIdWithPublished($postId)) {
+            throw new NotFoundException();
+        }
+
+        $comments = $this->commentService->findPaginator(['post_id' => $postId], $limit);
+
+        return (CommentResource::collection($comments))->toResponse();
+    }
 
     /**
      * @Middleware(AuthenticateMiddleware::class)
@@ -95,7 +114,7 @@ class CommentsController extends AbstractController
             throw new NotFoundException();
         }
 
-        if (! $comment = $post->comments()->find($commentId)) {
+        if (! $comment = $post->parentComments()->find($commentId)) {
             throw new NotFoundException();
         }
 
@@ -123,8 +142,12 @@ class CommentsController extends AbstractController
             throw new NotFoundException();
         }
 
-        if (! $comment = $post->comments()->find($commentId)) {
+        if (! $comment = $post->parentComments()->find($commentId)) {
             throw new NotFoundException();
+        }
+
+        if (! policy($comment)->delete(auth()->user(), $comment)) {
+            throw new AccessDeniedException();
         }
 
         $comment->delete();
