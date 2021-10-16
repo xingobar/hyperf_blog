@@ -21,6 +21,7 @@ use App\Request\CommentRequest;
 use App\Resource\CommentResource;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
@@ -110,6 +111,35 @@ class ChildrenController extends AbstractController
         }
 
         $children->update($params);
+
+        return (new CommentResource($children))->toResponse();
+    }
+
+    /**
+     * @DeleteMapping(path="{childrenId}")
+     * @Middleware(AuthenticateMiddleware::class)
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function delete(int $postId, int $parentId, int $childrenId)
+    {
+        if (! $post = $this->postService->findByIdWithPublished($postId)) {
+            throw new NotFoundException();
+        }
+
+        if (! $parent = $post->parentComments()->find($parentId)) {
+            throw new NotFoundException();
+        }
+
+        if (! $children = $parent->children()->find($childrenId)) {
+            throw new NotFoundException();
+        }
+
+        if (! policy($children)->delete(auth()->user(), $children)) {
+            throw new AccessDeniedException();
+        }
+
+        $children->delete();
 
         return (new CommentResource($children))->toResponse();
     }
