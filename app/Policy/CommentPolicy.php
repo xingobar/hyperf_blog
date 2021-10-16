@@ -14,7 +14,7 @@ namespace App\Policy;
 use App\Model\Comment;
 use App\Model\User;
 use HyperfExt\Auth\Access\HandlesAuthorization;
-use HyperfExt\Auth\Annotation\Policy;
+use HyperfExt\Auth\Annotations\Policy;
 
 /**
  * @Policy({Comment::class})
@@ -67,6 +67,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
+        return $user->id === $comment->user_id;
     }
 
     /**

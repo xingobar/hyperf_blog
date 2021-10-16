@@ -21,6 +21,7 @@ use App\Request\CommentRequest;
 use App\Resource\CommentResource;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
@@ -105,6 +106,24 @@ class CommentsController extends AbstractController
         $params = $request->validated();
 
         $comment->update($params);
+
+        return (new CommentResource($comment))->toResponse();
+    }
+
+    /**
+     * @DeleteMapping(path="{commentId}")
+     */
+    public function delete(int $postId, int $commentId)
+    {
+        if (! $post = $this->postService->findByIdWithPublished($postId)) {
+            throw new NotFoundException();
+        }
+
+        if (! $comment = $post->comments()->find($commentId)) {
+            throw new NotFoundException();
+        }
+
+        $comment->delete();
 
         return (new CommentResource($comment))->toResponse();
     }
