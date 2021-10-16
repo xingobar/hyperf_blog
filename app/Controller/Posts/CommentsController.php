@@ -14,6 +14,7 @@ namespace App\Controller\Posts;
 use App\Contracts\Service\CommentServiceInterface;
 use App\Contracts\Service\PostServiceInterface;
 use App\Controller\AbstractController;
+use App\Exception\AccessDeniedException;
 use App\Exception\NotFoundException;
 use App\Middleware\AuthenticateMiddleware;
 use App\Request\CommentRequest;
@@ -95,6 +96,10 @@ class CommentsController extends AbstractController
 
         if (! $comment = $post->comments()->find($commentId)) {
             throw new NotFoundException();
+        }
+
+        if (! policy($comment)->update(auth()->user(), $comment)) {
+            throw new AccessDeniedException();
         }
 
         $params = $request->validated();
