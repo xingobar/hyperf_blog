@@ -14,4 +14,5 @@ return [
     \Hyperf\Database\Model\Factory::class => \App\Service\ModelFactory::class,
     \App\Contracts\Service\PostServiceInterface::class => \App\Service\PostService::class,
     \App\Contracts\Service\CategoryServiceInterface::class => \App\Service\CategoryService::class,
+    \App\Contracts\Service\CommentServiceInterface::class => \App\Service\CommentService::class,
 ];

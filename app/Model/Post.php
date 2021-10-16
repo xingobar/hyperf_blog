@@ -79,4 +79,13 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    /**
+     * 留言資料.
+     * @return \Hyperf\Database\Model\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
 }
