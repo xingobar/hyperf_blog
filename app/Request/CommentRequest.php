@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Request;
 
 use Hyperf\Validation\Request\FormRequest;
+use HyperfExt\Auth\Exceptions\AuthenticationException;
 
 class CommentRequest extends FormRequest
 {
@@ -47,5 +48,10 @@ class CommentRequest extends FormRequest
             'body.required' => '請輸入留言內容',
             'body.min' => '留言內容至少 :min 個字',
         ];
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new AuthenticationException('尚未登入');
     }
 }
