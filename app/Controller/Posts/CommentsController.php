@@ -52,7 +52,6 @@ class CommentsController extends AbstractController
         $request = $this->container->get(CommentRequest::class);
         $request->scene('create')->validateResolved();
 
-        var_dump('post id => ' . $postId);
         if (! $post = $this->postService->findByIdWithPublished($postId)) {
             throw new NotFoundException();
         }
